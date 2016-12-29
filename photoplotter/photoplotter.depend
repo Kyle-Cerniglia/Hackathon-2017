@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1471499729 source:c:\users\kyle\documents\project documentation\mapper\photoplotter\main.cpp
+	<stdio.h>
+	<stdlib.h>
+	<cstdio>
+	<math.h>
+
