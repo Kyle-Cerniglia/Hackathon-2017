@@ -11,12 +11,19 @@ Current plan:
 4: Navigation
 
 Sections:
+
 Mobility (Kyle)
+
 Local area data aquisition (Kyle)
+
 Map making
+
 Route plotting (Kinsleigh)
+
 IMU maths (Matthew)
+
 Audio triangulation (Alex)
+
 PCB Design (Eaglecad)
   
 Future drone implementation
