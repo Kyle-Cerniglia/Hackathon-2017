@@ -28,7 +28,7 @@ void loop() {
   digitalWrite(pin_motor_b_dir, 0);
   analogWrite(pin_motor_b_spd, 255);
 
-  while(mag.m.x < 3500){
+  while(mag.m.x < 2000){
     mag.read();
   }
 
@@ -39,7 +39,7 @@ void loop() {
   
   //Find north
   maxval = mag.m.x;
-  while(mag.m.x > 3500){
+  while(mag.m.x > 2000){
     mag.read();
     Serial.print(mag.m.x);
     Serial.print(":");
