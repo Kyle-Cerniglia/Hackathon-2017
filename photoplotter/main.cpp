@@ -15,7 +15,7 @@ int y = 0;
 int degree = 0;
 int range = 0;
 int range_a[4][142];//x, y, degree, range
-int photogrid[300][200];
+int photogrid[400][200];
 int i = 0;
 
 int main()
@@ -42,22 +42,23 @@ int main()
 
     //Point generation
     while(i < 71){
+    printf("ID: %d\n", i);
         range_a[2][i] = 71 - range_a[2][i];
         x = range_a[3][i] * sin(RAD * range_a[2][i]);
         y = range_a[3][i] * cos(RAD * range_a[2][i]);
-        photogrid[x + 150][200 - y] = 1;
+        photogrid[x + 200][200 - y] = 1;
         i++;
     }
     i = 0;
 
-    photogrid[150][200 - range_a[2][71]] = 1;
+    photogrid[400][200 - range_a[2][71]] = 1;
 
     i = 72;
     while(i < 142){
         range_a[2][i] = range_a[2][i] - 71;
         x = range_a[3][i] * sin(RAD * range_a[2][i]);
         y = range_a[3][i] * cos(RAD * range_a[2][i]);
-        photogrid[150 - x][200 - y] = 1;
+        photogrid[200 - x][200 - y] = 1;
         i++;
     }
     i = 0;
@@ -94,7 +95,7 @@ int main()
     x = 0;
     y = 0;
     while(y < 200){
-        while(x < 300){
+        while(x < 400){
             if(photogrid[x][y] == 1){
                 fprintf(write, "O");
             }
