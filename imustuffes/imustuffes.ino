@@ -44,7 +44,7 @@ void loop()
   imu.read();
 
   snprintf(report, sizeof(report), "A: %6d %6d %6d    G: %6d %6d %6d",
-    imu.a.x *(0.061 * 9.81 / 100.0), imu.a.y *(0.061 * 9.81 / 100.0), imu.a.z *(0.061 * 9.81 / 100),
+    imu.a.x *(0.061 * 9.81 / 1000.0), imu.a.y *(0.061 * 9.81 / 1000.0), imu.a.z *(0.061 * 9.81 / 1000.0),
     imu.g.x, imu.g.y, imu.g.z);
   Serial.println(report);
 
