@@ -25,11 +25,14 @@ significant bit) at this FS setting, so the raw reading of
 LSM6 imu;
 
 char report[80];
-
+int xAccel, yAccel, zAccel;
+int xGyro, yGyro, zGyro;
 void setup()
 {
   Serial.begin(9600);
   Wire.begin();
+
+  
 
   if (!imu.init())
   {
@@ -43,9 +46,16 @@ void loop()
 {
   imu.read();
 
+  xAccel = imu.a.x * 0.00061;
+  yAccel = imu.a.y * (0.061 * 9.81 / 1000.0);
+  zAccel = imu.a.z * (0.061 * 9.81 / 1000.0);
+  xGyro = imu.g.x * (4.375/ 1000);
+  yGyro = imu.g.y * (4.375/ 1000);
+  zGyro = imu.g.z * (4.375/ 1000);
+
   snprintf(report, sizeof(report), "A: %6d %6d %6d    G: %6d %6d %6d",
-    imu.a.x *(0.061 * 9.81 / 1000.0), imu.a.y *(0.061 * 9.81 / 1000.0), imu.a.z *(0.061 * 9.81 / 1000.0),
-    imu.g.x, imu.g.y, imu.g.z);
+    xAccel, yAccel, zAccel,
+    xGyro, yGyro, zGyro);
   Serial.println(report);
 
   delay(100);
