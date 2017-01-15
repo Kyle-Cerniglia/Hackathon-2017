@@ -1,7 +1,7 @@
 #include <EEPROM.h>
 
-int mapread(int x, int y, int data);
-void mapwrite(int x, int y);
+int mapread(int x, int y);
+void mapwrite(int x, int y, int data);
 
 int mapread(int x, int y){
   y = 31 - y;
