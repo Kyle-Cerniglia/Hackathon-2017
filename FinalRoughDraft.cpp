@@ -1,6 +1,6 @@
-#include <iostream>
 #include <math.h>
 #include <EEPROM.h>
+#include <Wire.h>
 
 //These are our global variables used for pathfinding. 
 int xpos = 0;
@@ -18,7 +18,7 @@ int pin_motor_a_spd = 5;
 int pin_motor_b_dir = 7;
 int pin_motor_b_spd = 6;
 
-void AngleToPoint(float& angle, int& xfinal, int& yfinal);
+void AngleToPoint(float& angle);
 void findPath();
 void moveForwardUno();
 bool canRight();
@@ -33,6 +33,9 @@ void setup() {
   pinMode(pin_motor_a_spd, OUTPUT);
   pinMode(pin_motor_b_dir, OUTPUT);
   pinMode(pin_motor_b_spd, OUTPUT);
+  pinMode(13, OUTPUT);
+  digitalWrite(13, LOW);
+  Wire.begin();
 }
 
 //This is the function that begins the attempt to find a path. 
@@ -40,9 +43,9 @@ void BeginRun(){
   //This angle will be given to us by the audio thing. For now, we just hard code it in. 
   float angle;
   //We turn the angle into x- and y-coordinates, which are global variables represented by xfinal and yfinal.
-  AngleToPoint(float& angle);
+  AngleToPoint(angle);
   //This function turns the map into a grid. 
-  void ReadGrid();
+  ReadGrid();
   //Then, we find the path. 
   findPath();
   
@@ -54,7 +57,7 @@ void ReadGrid(){
   //Going through every element within the map, we check to see whether it is clear or not. 
   for(i=0;i < 32; ++i){
     for(j=0;j<32;++j){
-      if(readMap(i,j) == 1){
+      if(readMap(i,j) == 3){
         grid[i][j] = true;
 	}
       else{
@@ -134,7 +137,7 @@ void turnLeft(){
 //This sees whether or not Pete can turn right or not. 
 bool canRight(){
   //If we are pointed north and we find that the square east is not occupied, 
-  if(curdir%4 == 1 && xpos != 31){
+  if(curdir%4 == 1 && xpos < 31){
 	//If we find that there is nothing, it is a safe square. 
     if(grid[xpos+1][ypos]){
       return true;
@@ -143,7 +146,7 @@ bool canRight(){
   }
   
   //If we are pointed east and we find that the square south is vacant, 
-  if(curdir%4 == 2 && ypos != 0){
+  if(curdir%4 == 2 && ypos > 0){
     if(grid[xpos][ypos-1]){
       return true;
     }
@@ -151,14 +154,14 @@ bool canRight(){
   }
   
   //If we are pointed south and we find that the square west is vacant, 
-  if(currdir%4 == 3 && xpos != 0){
+  if(currdir%4 == 3 && xpos > 0){
     if(grid[xpos-1][ypos]){
       return true;
     }
     return false;
   }
   //If we are pointed west and find that the square north is vacant,
-  if(currdirr%4==0 && ypos != 31) {
+  if(currdirr%4==0 && ypos < 31) {
     if(grid[xpos][ypos+1]){
       return true;
     }
@@ -166,41 +169,27 @@ bool canRight(){
   }
   
   //Otherwise, that means we cannot turn right. 
-  else{
     return false;
-  }
     
 }
 
 //This check determines whether or not the square facing the bot is vacant.
 bool canForward(){
   //If we are north,
-  if(curdir%4 == 1){
-    if(grid[xpos][ypos+1]){
-      return true;
-    }
-    return false;
+  if(curdir%4 == 1 && grid[xpos][ypos+1]){
+	return true;
   }
   //If we are east,
-  if(curdir%4 == 2){
-    if(grid[xpos+1][ypos]){
+  if(curdir%4 == 2 && grid[xpos+1][ypos]){
       return true;
-    }
-    return false;
   }
   //If we are south,
-  if(curdir%4 == 3){
-    if(grid[xpos][ypos-1]){
+  if(curdir%4 == 3 && grid[xpos][ypos-1]){
       return true;
-    }
-    return false;
   }
   //If we are west,
-  if(curdir%4 == 0){
-    if(grid[xpos-1][ypos]){
+  if(curdir%4 == 0 && grid[xpos-1][ypos]){
       return true;
-    }
-    return false;
   }
   return false;
 }
