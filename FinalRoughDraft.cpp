@@ -2,7 +2,7 @@
 #include <math.h>
 #include <EEPROM.h>
 
-//These are our global variables. 
+//These are our global variables used for pathfinding. 
 int xpos = 0;
 int ypos = 0;
 int xfinal;
@@ -23,6 +23,8 @@ void findPath();
 void moveForwardUno();
 bool canRight();
 bool canForward();
+void turnLeft();
+void turnRight();
 int mapread(int x, int y);
 void mapwrite(int x, int y, int data);
 
@@ -35,10 +37,11 @@ void setup() {
 
 //This is the function that begins the attempt to find a path. 
 void BeginRun(){
-  //This angle will be given to us by the audio thing. Not quite sure how. 
+  //This angle will be given to us by the audio thing. For now, we just hard code it in. 
   float angle;
-  //We turn the angle into x- and y-coordinates.
+  //We turn the angle into x- and y-coordinates, which are global variables represented by xfinal and yfinal.
   AngleToPoint(float& angle);
+  //This function turns the map into a grid. 
   void ReadGrid();
   //Then, we find the path. 
   findPath();
@@ -48,11 +51,12 @@ void BeginRun(){
 
 void ReadGrid(){
   int i, j;
+  //Going through every element within the map, we check to see whether it is clear or not. 
   for(i=0;i < 32; ++i){
     for(j=0;j<32;++j){
       if(readMap(i,j) == 1){
         grid[i][j] = true;
-      }
+	}
       else{
         grid[i][j] = false;
       }
@@ -62,14 +66,13 @@ void ReadGrid(){
 
 //This function goes to the destination.
 void findPath(){
-  
+  //NOTE: xpos and ypos are global variables used to keep track of where we are. 
   //So while we have not reached our final destination,
   while(xpos != xfinal && ypos != yfinal){ 
     //If we find that we can turn right,
     if (canRight()){ 
       //We turn right and then go forward.
       turnRight();
-      //moveForwardUno is the funciton that moves Pete forward by one, done by Matt. 
       moveForwardUno();
     }
     //Otherwise, if we find that we can go forward,
@@ -89,7 +92,7 @@ void findPath(){
   }
 }
 
-//The two functions below rotate Pete 90 degrees counterclockwise and clockwise respectively. 
+//This function rotates Pete clockwise and makes him go forward a bit to make up for the rotation making him go back a bit. 
 void turnRight(){
   digitalWrite(pin_motor_a_dir, 0);
   analogWrite(pin_motor_a_spd, 100);
@@ -106,6 +109,7 @@ void turnRight(){
   analogWrite(pin_motor_a_spd, 0);
   digitalWrite(pin_motor_b_dir, 0);
   analogWrite(pin_motor_b_spd, 0);
+  curdir += 1;
 }
 
 void turnLeft(){
@@ -124,12 +128,14 @@ void turnLeft(){
   analogWrite(pin_motor_a_spd, 0);
   digitalWrite(pin_motor_b_dir, 0);
   analogWrite(pin_motor_b_spd, 0);  
+  curdir -= 1;
 }
 
 //This sees whether or not Pete can turn right or not. 
 bool canRight(){
   //If we are pointed north and we find that the square east is not occupied, 
   if(curdir%4 == 1 && xpos != 31){
+	//If we find that there is nothing, it is a safe square. 
     if(grid[xpos+1][ypos]){
       return true;
     }
