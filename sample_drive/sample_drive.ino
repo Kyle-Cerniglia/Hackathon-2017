@@ -16,29 +16,29 @@ void loop() {
 
   //Forwards
   digitalWrite(pin_motor_a_dir, 0);
-  analogWrite(pin_motor_a_spd, 255);
+  analogWrite(pin_motor_a_spd, 100);
   digitalWrite(pin_motor_b_dir, 0);
-  analogWrite(pin_motor_b_spd, 255);
+  analogWrite(pin_motor_b_spd, 100);
   delay(1000);
   
   //Backwards
   digitalWrite(pin_motor_a_dir, 1);
-  analogWrite(pin_motor_a_spd, 255);
+  analogWrite(pin_motor_a_spd, 100);
   digitalWrite(pin_motor_b_dir, 1);
-  analogWrite(pin_motor_b_spd, 255);
+  analogWrite(pin_motor_b_spd, 100);
   delay(1000);
 
   //Left
   digitalWrite(pin_motor_a_dir, 1);
-  analogWrite(pin_motor_a_spd, 255);
+  analogWrite(pin_motor_a_spd, 100);
   digitalWrite(pin_motor_b_dir, 0);
-  analogWrite(pin_motor_b_spd, 255);
+  analogWrite(pin_motor_b_spd, 100);
   delay(1000);
 
   //Right
   digitalWrite(pin_motor_a_dir, 0);
-  analogWrite(pin_motor_a_spd, 255);
+  analogWrite(pin_motor_a_spd, 100);
   digitalWrite(pin_motor_b_dir, 1);
-  analogWrite(pin_motor_b_spd, 255);
+  analogWrite(pin_motor_b_spd, 100);
   delay(1000);
 }
